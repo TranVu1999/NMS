@@ -21,8 +21,12 @@ public class HomeActivity extends AppCompatActivity {
     Toolbar toolbar;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+
     ListView listView;
+    ListView listViewAccount;
+
     ArrayList<ItemMenu> arrList;
+    ArrayList<ItemMenu> arrListAccount;
     MenuAdapter menuAdapter;
 
     @Override
@@ -34,6 +38,7 @@ public class HomeActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         listView = (ListView) findViewById(R.id.listView);
+        listViewAccount = (ListView) findViewById(R.id.listViewAccount);
         navigationView = (NavigationView) findViewById(R.id.navigationView);
 
         // Config toolbar
@@ -49,19 +54,22 @@ public class HomeActivity extends AppCompatActivity {
 
         // action menu
         arrList = new ArrayList<ItemMenu>();
-        arrList.add(new ItemMenu("import", R.drawable.ic_action_user));
-        arrList.add(new ItemMenu("import", R.drawable.ic_action_user));
-        arrList.add(new ItemMenu("import", R.drawable.ic_action_user));
-        arrList.add(new ItemMenu("import", R.drawable.ic_action_user));
-        arrList.add(new ItemMenu("import", R.drawable.ic_action_user));
-        arrList.add(new ItemMenu("import", R.drawable.ic_action_user));
-
-        arrList.add(new ItemMenu("import", R.drawable.ic_action_user));
-        arrList.add(new ItemMenu("import", R.drawable.ic_action_user));
-        arrList.add(new ItemMenu("import", R.drawable.ic_action_user));
+        arrList.add(new ItemMenu("Home", R.drawable.ic_action_home));
+        arrList.add(new ItemMenu("Category", R.drawable.ic_action_category));
+        arrList.add(new ItemMenu("Priority", R.drawable.ic_action_priority));
+        arrList.add(new ItemMenu("Status", R.drawable.ic_action_status));
+        arrList.add(new ItemMenu("Note", R.drawable.ic_action_note));
 
         menuAdapter = new MenuAdapter(this, R.layout.item_row_menu, arrList);
         listView.setAdapter(menuAdapter);
+
+        // action menu account
+        arrListAccount = new ArrayList<ItemMenu>();
+        arrListAccount.add(new ItemMenu("Edit Profile", R.drawable.ic_action_edit));
+        arrListAccount.add(new ItemMenu("Change Password", R.drawable.ic_action_change));
+
+        menuAdapter = new MenuAdapter(this, R.layout.item_row_menu, arrListAccount);
+        listViewAccount.setAdapter(menuAdapter);
     }
 
 
