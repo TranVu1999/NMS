@@ -12,13 +12,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OptionAdapter extends ArrayAdapter<Option> {
+public class OptionAdapter extends BaseAdapter {
     private Context context;
     private int layout;
     private List<Option> list;
 
     public OptionAdapter(Context context, int layout, List<Option> list) {
-        super(context, layout, list);
         this.context = context;
         this.layout = layout;
         this.list = list;
