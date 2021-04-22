@@ -54,8 +54,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
             textStatus = itemView.findViewById(R.id.textStatus);
             textPlanDate = itemView.findViewById(R.id.textPlanDate);
             textCreateDate = itemView.findViewById(R.id.textCreateDate);
-
-
         }
     }
 }
