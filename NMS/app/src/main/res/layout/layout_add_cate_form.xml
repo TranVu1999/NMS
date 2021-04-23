@@ -38,7 +38,7 @@
 
             <EditText
                 android:layout_weight="6"
-                android:id="@+id/editTextEmail"
+                android:id="@+id/editNoteName"
                 style="@style/modifiedEditText"
                 android:hint="@string/login_email_hint"
                 android:inputType="textEmailAddress"

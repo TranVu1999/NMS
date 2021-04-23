@@ -8,16 +8,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class DemoDialogActivity extends AppCompatActivity {
 
@@ -65,7 +62,7 @@ public class DemoDialogActivity extends AppCompatActivity {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         Button btnCloseDialog = dialog.findViewById(R.id.btnCloseDialog);
-        Button btnSaveData = dialog.findViewById(R.id.btnSaveData);
+        Button btnSaveData = dialog.findViewById(R.id.btnSaveDataAdd);
 
         dialog.show();
     }
@@ -75,7 +72,7 @@ public class DemoDialogActivity extends AppCompatActivity {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         Button btnCloseDialog = dialog.findViewById(R.id.btnCloseDialog);
-        Button btnSaveData = dialog.findViewById(R.id.btnSaveData);
+        Button btnSaveData = dialog.findViewById(R.id.btnSaveDataAdd);
         Button btnSelectPlanDate = dialog.findViewById(R.id.btnSelectPlanDate);
         btnSelectPlanDate.setOnClickListener(new View.OnClickListener() {
             @Override
