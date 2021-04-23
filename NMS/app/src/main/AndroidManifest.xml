@@ -19,10 +19,11 @@
         <activity
             android:name=".DemoDialogActivity"
             android:theme="@style/AppTheme.NoActionBar">
-
-
         </activity>
-
+        <activity
+            android:name=".ChartActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity
             android:name=".ListNoteActivity"
             android:theme="@style/AppTheme.NoActionBar">
