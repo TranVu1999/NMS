@@ -332,7 +332,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="tranvudpqn123@gmail.com"
-                        android:id="@+id/textUsername"
+                        android:id="@+id/txtNameUser"
                         android:textColor="#fff"
                         android:textSize="16sp"/>
 
