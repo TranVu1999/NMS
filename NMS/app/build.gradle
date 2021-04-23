@@ -42,4 +42,8 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4e8d19936c0f5ae8b98f3803005573aa528a569b
 }
