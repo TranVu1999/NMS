@@ -2,10 +2,8 @@ package tranvu203107.dmt.nms;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.appcompat.widget.VectorEnabledTintResources;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
@@ -23,7 +21,6 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +43,8 @@ public class ListNoteActivity extends AppCompatActivity {
     ListView listView;
     ListView listViewAccount;
     EditText textAddNote;
+    EditText editNoteName;
+    Button btnCloseDialogs;
 
     ArrayList<ItemMenu> arrList;
     ArrayList<ItemMenu> arrListAccount;
@@ -58,13 +57,21 @@ public class ListNoteActivity extends AppCompatActivity {
     FloatingActionButton btnAddNote;
     Dialog dialog;
     Dialog planDateDialog;
-    String date;
+
 
     Spinner spinnerCate, spinnerPriority, spinnerStatus;
 
     public static String DATABASE_NAME="myDB.sqlite";
     public static String DB_PATH_SUFFIX="/databases/";
     public static SQLiteDatabase database = null;
+
+    public static String statusName;
+    public static String cateName;
+    public static String priorityName;
+    public static String planDate;
+    public static int cateIndex;
+    public static int priIndex;
+    public static int stIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,14 +135,17 @@ public class ListNoteActivity extends AppCompatActivity {
                 openAddNoteDialog();
             }
         });
+
     }
 
     private void openAddNoteDialog() {
         dialog.setContentView(R.layout.layout_add_note);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
+        dialog.setCancelable(false);
+        editNoteName=(EditText) dialog.findViewById(R.id.editNoteName);
+        btnCloseDialogs=(Button)dialog.findViewById(R.id.btnCloseDialog);
         Button btnCloseDialog = dialog.findViewById(R.id.btnCloseDialog);
-        Button btnSaveData = dialog.findViewById(R.id.btnSaveData);
+        Button btnSaveData = dialog.findViewById(R.id.btnSaveDataAdd);
         Button btnSelectPlanDate = dialog.findViewById(R.id.btnSelectPlanDate);
         btnSelectPlanDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,32 +154,55 @@ public class ListNoteActivity extends AppCompatActivity {
             }
         });
 
+        database = openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
 
         OptionAdapter optionsAdapter;
         spinnerCate = dialog.findViewById(R.id.spinnerCate);
         spinnerPriority = dialog.findViewById(R.id.spinnerPrioroty);
         spinnerStatus = dialog.findViewById(R.id.spinnerStatus);
         ArrayList<Option> arrOptionCate;
-        // action menu
         arrOptionCate = new ArrayList<Option>();
-        arrOptionCate.add(new Option("Cate 1", "1"));
-        arrOptionCate.add(new Option("Cate 2", "2"));
-        arrOptionCate.add(new Option("Cate 3", "3"));
-        arrOptionCate.add(new Option("Cate 4", "4"));
+        // action cate
+        Cursor cursor = database.rawQuery("SELECT Id,NAME\n" +
+                "FROM CATEGORY",null);
+        while(cursor.moveToNext())
+        {
+            int id=cursor.getInt(0);
+            String cateName = cursor.getString(1);
+            arrOptionCate.add(new Option(cateName,id+""));
+
+        }
+        cursor.close();
 
         ArrayList<Option> arrOptionPriority;
-        // action menu
+        // action Priority
         arrOptionPriority = new ArrayList<Option>();
-        arrOptionPriority.add(new Option("Prio 1", "1"));
-        arrOptionPriority.add(new Option("Prio 2", "2"));
-        arrOptionPriority.add(new Option("Prio 3", "3"));
+
+        Cursor cursorPriority = database.rawQuery("SELECT Id,Priority\n" +
+                "FROM PRIORITY",null);
+        while(cursorPriority.moveToNext())
+        {
+            int id=cursorPriority.getInt(0);
+            String priorityName = cursorPriority.getString(1);
+            arrOptionPriority.add(new Option(priorityName,id+""));
+
+        }
+        cursorPriority.close();
+
 
         ArrayList<Option> arrOptionStatus;
-        // action menu
+        // action Status
         arrOptionStatus = new ArrayList<Option>();
-        arrOptionStatus.add(new Option("Status 1", "1"));
-        arrOptionStatus.add(new Option("Status 2", "2"));
-        arrOptionStatus.add(new Option("Status 3", "3"));
+        Cursor cursorStatus = database.rawQuery("SELECT Id,Status \n" +
+                "FROM STATUS",null);
+        while(cursorStatus.moveToNext())
+        {
+            int id=cursorStatus.getInt(0);
+            String statusName = cursorStatus.getString(1);
+            arrOptionStatus.add(new Option(statusName,id+""));
+
+        }
+        cursorPriority.close();
 
         optionsAdapter = new OptionAdapter(this, R.layout.layout_option_item, arrOptionCate);
         spinnerCate.setAdapter(optionsAdapter);
@@ -184,7 +217,9 @@ public class ListNoteActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 // your code here
-                Toast.makeText(getApplicationContext(), "You pick category " + position, Toast.LENGTH_LONG).show();
+                cateIndex=position+1;
+                cateName= arrOptionCate.get(position).title.toString();
+                Toast.makeText(getApplicationContext(), "You pick category "+ cateName , Toast.LENGTH_LONG).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
@@ -195,7 +230,9 @@ public class ListNoteActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 // your code here
-                Toast.makeText(getApplicationContext(), "You pick priority " + position, Toast.LENGTH_LONG).show();
+                priIndex=position+1;
+                priorityName = arrOptionPriority.get(position).title.toString();
+                Toast.makeText(getApplicationContext(), "You pick priority " + priorityName, Toast.LENGTH_LONG).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
@@ -206,7 +243,9 @@ public class ListNoteActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 // your code here
-                Toast.makeText(getApplicationContext(), "You pick status " + position, Toast.LENGTH_LONG).show();
+                stIndex=position+1;
+                statusName = arrOptionStatus.get(position).title.toString();
+                Toast.makeText(getApplicationContext(), "You pick status " + statusName, Toast.LENGTH_LONG).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
@@ -245,7 +284,7 @@ public class ListNoteActivity extends AppCompatActivity {
                 String  Year = String.valueOf(year);
                 String  Month = String.valueOf(month);
 
-                date = curDate+'/'+Month+'/'+Year;
+                planDate = curDate+'/'+Month+'/'+Year;
             }
         });
 
@@ -254,7 +293,7 @@ public class ListNoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 TextView lblPlanDate = dialog.findViewById(R.id.lblPlanDate);
-                lblPlanDate.setText(date);
+                lblPlanDate.setText(planDate);
                 planDateDialog.dismiss();
             }
         });
@@ -488,5 +527,30 @@ public class ListNoteActivity extends AppCompatActivity {
             Toast.makeText(ListNoteActivity.this,"Them thanh cong",Toast.LENGTH_LONG).show();
         else
             Toast.makeText(ListNoteActivity.this,"Them that bai",Toast.LENGTH_LONG).show();
+    }
+
+    public void SaveDataAdd(View view) {
+        String noteName =editNoteName.getText().toString();
+        ContentValues newValues = new ContentValues();
+       // newValues.put("Id",8);
+        newValues.put("Name",noteName);
+        newValues.put("UserId",1);
+        newValues.put("CateId",cateIndex);
+        newValues.put("PriorityId",priIndex);
+        newValues.put("StatusId",stIndex);
+        newValues.put("PlanDate",planDate);
+        newValues.put("CreatedDate",java.time.LocalDate.now().toString());
+
+        long kq =ListNoteActivity.database.insert("NOTE",null,newValues);
+        if(kq>0) {
+            Toast.makeText(ListNoteActivity.this, "Them thanh cong", Toast.LENGTH_LONG).show();
+            showListNote();
+        }
+        else
+            Toast.makeText(ListNoteActivity.this,"Them that bai",Toast.LENGTH_LONG).show();
+    }
+    public void eCloseAddNote(View view)
+    {
+        finish();
     }
 }
