@@ -1,12 +1,16 @@
 package tranvu203107.dmt.nms;
 
 import android.content.Context;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -39,6 +43,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         holder.textPriority.setText(note.getPriority());
         holder.textPlanDate.setText(note.getPlanDate());
         holder.textCreateDate.setText(note.getCreateDate());
+
     }
 
     @Override
@@ -46,8 +51,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         return listNote.size(); // trả item tại vị trí postion
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         TextView textStatus, textName, textPlanDate, textCreateDate,textCategory,textPriority;
+        CardView noteCardView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -59,6 +65,33 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
             textPlanDate = itemView.findViewById(R.id.textPlanDate);
             textCreateDate = itemView.findViewById(R.id.textCreateDate);
 
+            noteCardView = itemView.findViewById(R.id.noteCardView);
+            noteCardView.setOnCreateContextMenuListener(this);
+
+//            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+//                public boolean onLongClick(View arg0) {
+//                    Toast.makeText(context.getApplicationContext(), "Long Clicked " , Toast.LENGTH_SHORT).show();
+//                    return false;
+//                }
+//            });
         }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            menu.add(this.getAdapterPosition(),121,0,"Sửa");
+            menu.add(this.getAdapterPosition(),122,1,"Xóa");
+        }
+
+    }
+    public Note edit(int position){
+        //xử lý thêm
+        Note selectedNote = listNote.get(position); //lấy được thông tin note đang chọn
+        //Toast.makeText(context.getApplicationContext(), selectedNote.getId(), Toast.LENGTH_LONG).show();
+        return selectedNote;
+    }
+
+    public void delete(int position){
+        //xử lý xóa
+        Note selectedNote = listNote.get(position); //lấy được thông tin note đang chọn
     }
 }

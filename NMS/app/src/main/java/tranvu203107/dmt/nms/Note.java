@@ -1,6 +1,7 @@
 package tranvu203107.dmt.nms;
 
 public class Note {
+    private String id;
     private String name;
     private String category;
     private String priority;
@@ -8,7 +9,8 @@ public class Note {
     private String planDate;
     private String createDate;
 
-    public Note(String status, String category, String name, String priority, String planDate, String createDate) {
+    public Note(String id, String status, String category, String name, String priority, String planDate, String createDate) {
+        this.id = id;
         this.name = name;
         this.category = category;
         this.priority = priority;
@@ -16,6 +18,8 @@ public class Note {
         this.planDate = planDate;
         this.createDate = createDate;
     }
+
+    public String getId() { return id; }
 
     public String getName() {
         return name;

@@ -1,5 +1,6 @@
 package tranvu203107.dmt.nms;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.widget.VectorEnabledTintResources;
@@ -16,6 +17,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -130,6 +132,22 @@ public class ListNoteActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case 121:
+                openEditNoteDialog(noteAdapter.edit(item.getGroupId()));    //hàm xử lý edit
+                //Toast.makeText(getApplicationContext(), "sửa phần tử thứ "+ item.getGroupId(), Toast.LENGTH_LONG).show();
+                return true;
+            case 122:
+                noteAdapter.delete(item.getGroupId());    //hàm xử lý xóa
+                //Toast.makeText(getApplicationContext(), "xóa phần tử thứ "+ item.getGroupId(), Toast.LENGTH_LONG).show();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
     private void openAddNoteDialog() {
         dialog.setContentView(R.layout.layout_add_note);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -152,24 +170,25 @@ public class ListNoteActivity extends AppCompatActivity {
         ArrayList<Option> arrOptionCate;
         // action menu
         arrOptionCate = new ArrayList<Option>();
-        arrOptionCate.add(new Option("Cate 1", "1"));
-        arrOptionCate.add(new Option("Cate 2", "2"));
-        arrOptionCate.add(new Option("Cate 3", "3"));
-        arrOptionCate.add(new Option("Cate 4", "4"));
+        arrOptionCate.add(new Option("Exercise", "1"));
+        arrOptionCate.add(new Option("Homework", "2"));
+        arrOptionCate.add(new Option("Meeting", "3"));
+        arrOptionCate.add(new Option("Entertainment", "4"));
+        arrOptionCate.add(new Option("My Job", "5"));
 
         ArrayList<Option> arrOptionPriority;
         // action menu
         arrOptionPriority = new ArrayList<Option>();
-        arrOptionPriority.add(new Option("Prio 1", "1"));
-        arrOptionPriority.add(new Option("Prio 2", "2"));
-        arrOptionPriority.add(new Option("Prio 3", "3"));
+        arrOptionPriority.add(new Option("High", "1"));
+        arrOptionPriority.add(new Option("Medium", "2"));
+        arrOptionPriority.add(new Option("Low", "3"));
 
         ArrayList<Option> arrOptionStatus;
         // action menu
         arrOptionStatus = new ArrayList<Option>();
-        arrOptionStatus.add(new Option("Status 1", "1"));
-        arrOptionStatus.add(new Option("Status 2", "2"));
-        arrOptionStatus.add(new Option("Status 3", "3"));
+        arrOptionStatus.add(new Option("Done", "1"));
+        arrOptionStatus.add(new Option("Processing", "2"));
+        arrOptionStatus.add(new Option("Pending", "3"));
 
         optionsAdapter = new OptionAdapter(this, R.layout.layout_option_item, arrOptionCate);
         spinnerCate.setAdapter(optionsAdapter);
@@ -180,39 +199,94 @@ public class ListNoteActivity extends AppCompatActivity {
         optionsAdapter = new OptionAdapter(this, R.layout.layout_option_item, arrOptionStatus);
         spinnerStatus.setAdapter(optionsAdapter);
 
-        spinnerCate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//        spinnerCate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+//                // your code here
+//                Toast.makeText(getApplicationContext(), "You pick category " + position, Toast.LENGTH_LONG).show();
+//            }
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parentView) {
+//                // your code here
+//            }
+//        });
+//        spinnerPriority.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+//                // your code here
+//                Toast.makeText(getApplicationContext(), "You pick priority " + position, Toast.LENGTH_LONG).show();
+//            }
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parentView) {
+//                // your code here
+//            }
+//        });
+//        spinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+//                // your code here
+//                Toast.makeText(getApplicationContext(), "You pick status " + position, Toast.LENGTH_LONG).show();
+//            }
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parentView) {
+//                // your code here
+//            }
+//        });
+
+        dialog.show();
+    }
+
+    private void openEditNoteDialog(Note currentNote) {
+        dialog.setContentView(R.layout.layout_add_note);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        Button btnCloseDialog = dialog.findViewById(R.id.btnCloseDialog);
+        Button btnSaveData = dialog.findViewById(R.id.btnSaveData);
+        Button btnSelectPlanDate = dialog.findViewById(R.id.btnSelectPlanDate);
+        btnSelectPlanDate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                // your code here
-                Toast.makeText(getApplicationContext(), "You pick category " + position, Toast.LENGTH_LONG).show();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
+            public void onClick(View v) {
+                openSelectDateDialog();
             }
         });
-        spinnerPriority.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                // your code here
-                Toast.makeText(getApplicationContext(), "You pick priority " + position, Toast.LENGTH_LONG).show();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
-            }
-        });
-        spinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                // your code here
-                Toast.makeText(getApplicationContext(), "You pick status " + position, Toast.LENGTH_LONG).show();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
-            }
-        });
+
+
+        OptionAdapter optionsAdapter;
+        spinnerCate = dialog.findViewById(R.id.spinnerCate);
+        spinnerPriority = dialog.findViewById(R.id.spinnerPrioroty);
+        spinnerStatus = dialog.findViewById(R.id.spinnerStatus);
+        ArrayList<Option> arrOptionCate;
+        // action menu
+        arrOptionCate = new ArrayList<Option>();
+        arrOptionCate.add(new Option("Exercise", "1"));
+        arrOptionCate.add(new Option("Homework", "2"));
+        arrOptionCate.add(new Option("Meeting", "3"));
+        arrOptionCate.add(new Option("Entertainment", "4"));
+        arrOptionCate.add(new Option("My Job", "5"));
+
+        ArrayList<Option> arrOptionPriority;
+        // action menu
+        arrOptionPriority = new ArrayList<Option>();
+        arrOptionPriority.add(new Option("High", "1"));
+        arrOptionPriority.add(new Option("Medium", "2"));
+        arrOptionPriority.add(new Option("Low", "3"));
+
+        ArrayList<Option> arrOptionStatus;
+        // action menu
+        arrOptionStatus = new ArrayList<Option>();
+        arrOptionStatus.add(new Option("Done", "1"));
+        arrOptionStatus.add(new Option("Processing", "2"));
+        arrOptionStatus.add(new Option("Pending", "3"));
+
+        optionsAdapter = new OptionAdapter(this, R.layout.layout_option_item, arrOptionCate);
+        spinnerCate.setAdapter(optionsAdapter);
+        spinnerCate.setSelection(arrOptionCate.indexOf(currentNote.getCategory()));
+
+        optionsAdapter = new OptionAdapter(this, R.layout.layout_option_item, arrOptionPriority);
+        spinnerPriority.setAdapter(optionsAdapter);
+
+        optionsAdapter = new OptionAdapter(this, R.layout.layout_option_item, arrOptionStatus);
+        spinnerStatus.setAdapter(optionsAdapter);
 
         dialog.show();
     }
@@ -268,7 +342,7 @@ public class ListNoteActivity extends AppCompatActivity {
         {
             case "Exercise":
             {
-                Cursor cursor = database.rawQuery("SELECT Status.status,CATEGORY.name,NOTE.Name,PRIORITY.Priority,NOTE.PlanDate,NOTE.CreatedDate\n" +
+                Cursor cursor = database.rawQuery("SELECT Status.status,CATEGORY.name,NOTE.Name,PRIORITY.Priority,NOTE.PlanDate,NOTE.CreatedDate,NOTE.Id\n" +
                         "FROM NOTE\n" +
                         "INNER JOIN CATEGORY ON NOTE.CateId =CATEGORY.Id\n" +
                         "INNER JOIN Priority ON NOTE.PriorityId = Priority.Id\n" +
@@ -284,7 +358,8 @@ public class ListNoteActivity extends AppCompatActivity {
                     String priorityName = cursor.getString(3);
                     String planDate = cursor.getString(4);
                     String createdDate = cursor.getString(5);
-                    arrNote.add(new Note(status,cateName,noteName,priorityName,planDate,createdDate));
+                    String id = cursor.getString(6);
+                    arrNote.add(new Note(id,status,cateName,noteName,priorityName,planDate,createdDate));
                 }
                 cursor.close();
                 noteAdapter =new NoteAdapter(getApplicationContext(), arrNote);
@@ -293,7 +368,7 @@ public class ListNoteActivity extends AppCompatActivity {
             }
             case "HomeWork":
             {
-                Cursor cursor = database.rawQuery("SELECT Status.status,CATEGORY.name,NOTE.Name,PRIORITY.Priority,NOTE.PlanDate,NOTE.CreatedDate\n" +
+                Cursor cursor = database.rawQuery("SELECT Status.status,CATEGORY.name,NOTE.Name,PRIORITY.Priority,NOTE.PlanDate,NOTE.CreatedDate,NOTE.Id\n" +
                         "FROM NOTE\n" +
                         "INNER JOIN CATEGORY ON NOTE.CateId =CATEGORY.Id\n" +
                         "INNER JOIN Priority ON NOTE.PriorityId = Priority.Id\n" +
@@ -309,7 +384,8 @@ public class ListNoteActivity extends AppCompatActivity {
                     String priorityName = cursor.getString(3);
                     String planDate = cursor.getString(4);
                     String createdDate = cursor.getString(5);
-                    arrNote.add(new Note(status,cateName,noteName,priorityName,planDate,createdDate));
+                    String id = cursor.getString(6);
+                    arrNote.add(new Note(id,status,cateName,noteName,priorityName,planDate,createdDate));
                 }
                 cursor.close();
                 noteAdapter =new NoteAdapter(getApplicationContext(), arrNote);
@@ -318,7 +394,7 @@ public class ListNoteActivity extends AppCompatActivity {
             }
             case "Meeting":
             {
-                Cursor cursor = database.rawQuery("SELECT Status.status,CATEGORY.name,NOTE.Name,PRIORITY.Priority,NOTE.PlanDate,NOTE.CreatedDate\n" +
+                Cursor cursor = database.rawQuery("SELECT Status.status,CATEGORY.name,NOTE.Name,PRIORITY.Priority,NOTE.PlanDate,NOTE.CreatedDate,NOTE.Id\n" +
                         "FROM NOTE\n" +
                         "INNER JOIN CATEGORY ON NOTE.CateId =CATEGORY.Id\n" +
                         "INNER JOIN Priority ON NOTE.PriorityId = Priority.Id\n" +
@@ -334,7 +410,8 @@ public class ListNoteActivity extends AppCompatActivity {
                     String priorityName = cursor.getString(3);
                     String planDate = cursor.getString(4);
                     String createdDate = cursor.getString(5);
-                    arrNote.add(new Note(status,cateName,noteName,priorityName,planDate,createdDate));
+                    String id = cursor.getString(6);
+                    arrNote.add(new Note(id,status,cateName,noteName,priorityName,planDate,createdDate));
                 }
                 cursor.close();
                 noteAdapter =new NoteAdapter(getApplicationContext(), arrNote);
@@ -343,7 +420,7 @@ public class ListNoteActivity extends AppCompatActivity {
             }
             case "Entertainment":
             {
-                Cursor cursor = database.rawQuery("SELECT Status.status,CATEGORY.name,NOTE.Name,PRIORITY.Priority,NOTE.PlanDate,NOTE.CreatedDate\n" +
+                Cursor cursor = database.rawQuery("SELECT Status.status,CATEGORY.name,NOTE.Name,PRIORITY.Priority,NOTE.PlanDate,NOTE.CreatedDate,NOTE.Id\n" +
                         "FROM NOTE\n" +
                         "INNER JOIN CATEGORY ON NOTE.CateId =CATEGORY.Id\n" +
                         "INNER JOIN Priority ON NOTE.PriorityId = Priority.Id\n" +
@@ -359,7 +436,8 @@ public class ListNoteActivity extends AppCompatActivity {
                     String priorityName = cursor.getString(3);
                     String planDate = cursor.getString(4);
                     String createdDate = cursor.getString(5);
-                    arrNote.add(new Note(status,cateName,noteName,priorityName,planDate,createdDate));
+                    String id = cursor.getString(6);
+                    arrNote.add(new Note(id,status,cateName,noteName,priorityName,planDate,createdDate));
                 }
                 cursor.close();
                 noteAdapter =new NoteAdapter(getApplicationContext(), arrNote);
@@ -368,7 +446,7 @@ public class ListNoteActivity extends AppCompatActivity {
             }
             case "MyJob":
             {
-                Cursor cursor = database.rawQuery("SELECT Status.status,CATEGORY.name,NOTE.Name,PRIORITY.Priority,NOTE.PlanDate,NOTE.CreatedDate\n" +
+                Cursor cursor = database.rawQuery("SELECT Status.status,CATEGORY.name,NOTE.Name,PRIORITY.Priority,NOTE.PlanDate,NOTE.CreatedDate,NOTE.Id\n" +
                         "FROM NOTE\n" +
                         "INNER JOIN CATEGORY ON NOTE.CateId =CATEGORY.Id\n" +
                         "INNER JOIN Priority ON NOTE.PriorityId = Priority.Id\n" +
@@ -384,7 +462,8 @@ public class ListNoteActivity extends AppCompatActivity {
                     String priorityName = cursor.getString(3);
                     String planDate = cursor.getString(4);
                     String createdDate = cursor.getString(5);
-                    arrNote.add(new Note(status,cateName,noteName,priorityName,planDate,createdDate));
+                    String id = cursor.getString(6);
+                    arrNote.add(new Note(id,status,cateName,noteName,priorityName,planDate,createdDate));
                 }
                 cursor.close();
                 noteAdapter =new NoteAdapter(getApplicationContext(), arrNote);
@@ -393,7 +472,7 @@ public class ListNoteActivity extends AppCompatActivity {
             }
             default:
             {
-                Cursor cursor = database.rawQuery("SELECT Status.status,CATEGORY.name,NOTE.Name,PRIORITY.Priority,NOTE.PlanDate,NOTE.CreatedDate\n" +
+                Cursor cursor = database.rawQuery("SELECT Status.status,CATEGORY.name,NOTE.Name,PRIORITY.Priority,NOTE.PlanDate,NOTE.CreatedDate,NOTE.Id\n" +
                         "FROM NOTE\n" +
                         "INNER JOIN CATEGORY ON NOTE.CateId =CATEGORY.Id\n" +
                         "INNER JOIN Priority ON NOTE.PriorityId = Priority.Id\n" +
@@ -408,7 +487,8 @@ public class ListNoteActivity extends AppCompatActivity {
                     String priorityName = cursor.getString(3);
                     String planDate = cursor.getString(4);
                     String createdDate = cursor.getString(5);
-                    arrNote.add(new Note(status,cateName,noteName,priorityName,planDate,createdDate));
+                    String id = cursor.getString(6);
+                    arrNote.add(new Note(id,status,cateName,noteName,priorityName,planDate,createdDate));
                 }
                 cursor.close();
                 noteAdapter =new NoteAdapter(getApplicationContext(), arrNote);

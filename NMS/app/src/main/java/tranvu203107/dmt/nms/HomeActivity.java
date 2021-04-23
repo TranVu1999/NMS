@@ -6,12 +6,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -29,6 +35,10 @@ public class HomeActivity extends AppCompatActivity {
     ArrayList<ItemMenu> arrListAccount;
     MenuAdapter menuAdapter;
 
+    private float[] yData = {15f,30f,55f};  //giá trị % của các Status
+    private String[] xData = {"Pending","Processing","Done"};   //label tương ứng cho các Status
+    PieChart pieChart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +50,14 @@ public class HomeActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.listView);
         listViewAccount = (ListView) findViewById(R.id.listViewAccount);
         navigationView = (NavigationView) findViewById(R.id.navigationView);
+
+        pieChart = (PieChart)findViewById(R.id.PieChart);
+
+        pieChart.setDescription("");
+        pieChart.setRotationEnabled(true);  //cho phép xoay
+        pieChart.setHoleRadius(0f);         //tên của chart, được viết trong 1 vòng tròn ở giữa chart với bán kính này
+        pieChart.setTransparentCircleAlpha(0);  // vòng tròng trong suốt, chắc để tạo thêm hiệu ứng cho đẹp?
+        addDataSet();
 
         // Config toolbar
         setSupportActionBar(toolbar);
@@ -70,5 +88,29 @@ public class HomeActivity extends AppCompatActivity {
 
         menuAdapter = new MenuAdapter(this, R.layout.item_row_menu, arrListAccount);
         listViewAccount.setAdapter(menuAdapter);
+    }
+    private void addDataSet() {
+        ArrayList<PieEntry> yEntrys = new ArrayList<>();
+
+        for(int i=0;i<yData.length;i++){
+            yEntrys.add(new PieEntry(yData[i],xData[i]));
+        }
+
+        PieDataSet pieDataSet = new PieDataSet(yEntrys,"");
+        pieDataSet.setSliceSpace(2);
+        pieDataSet.setValueTextSize(12);
+
+        ArrayList<Integer> colors = new ArrayList<>();
+        colors.add(Color.GRAY);
+        colors.add(Color.RED);
+        colors.add(Color.BLUE);
+        pieDataSet.setColors(colors);
+
+        PieData pieData = new PieData(pieDataSet);
+        pieData.setValueFormatter(new PercentFormatter());
+        pieData.setValueTextColor(Color.WHITE);
+        pieChart.setData(pieData);
+        pieChart.invalidate();
+
     }
 }
