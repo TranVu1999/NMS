@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,7 +34,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         Note note = listNote.get(position);
 
         holder.textStatus.setText(note.getStatus());
+        holder.textCategory.setText(note.getCategory());
         holder.textName.setText(note.getName());
+        holder.textPriority.setText(note.getPriority());
         holder.textPlanDate.setText(note.getPlanDate());
         holder.textCreateDate.setText(note.getCreateDate());
     }
@@ -46,15 +47,18 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textStatus, textName, textPlanDate, textCreateDate;
+        TextView textStatus, textName, textPlanDate, textCreateDate,textCategory,textPriority;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // Ánh xạ view
-            textName = itemView.findViewById(R.id.textName);
             textStatus = itemView.findViewById(R.id.textStatus);
+            textName = itemView.findViewById(R.id.textCategory);
+            textCategory=itemView.findViewById(R.id.textNoteName);
+            textPriority=itemView.findViewById(R.id.textPriority);
             textPlanDate = itemView.findViewById(R.id.textPlanDate);
             textCreateDate = itemView.findViewById(R.id.textCreateDate);
+
         }
     }
 }

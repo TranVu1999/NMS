@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -25,6 +26,7 @@ public class CategoryActivity extends AppCompatActivity {
     ArrayList<ItemMenu> arrList;
     ArrayList<ItemMenu> arrListAccount;
     MenuAdapter menuAdapter;
+    public static String nameCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,5 +69,36 @@ public class CategoryActivity extends AppCompatActivity {
 
         menuAdapter = new MenuAdapter(this, R.layout.item_row_menu, arrListAccount);
         listViewAccount.setAdapter(menuAdapter);
+    }
+
+    public void onClickExercise(View view) {
+        nameCategory ="Exercise";
+        Intent intent = new Intent(CategoryActivity.this,ListNoteActivity.class);
+        startActivity(intent);
+
+    }
+
+    public void onClickHomeWork(View view) {
+        nameCategory ="HomeWork";
+        Intent intent = new Intent(CategoryActivity.this,ListNoteActivity.class);
+        startActivity(intent);
+    }
+
+    public void onClickMeeting(View view) {
+        nameCategory ="Meeting";
+        Intent intent = new Intent(CategoryActivity.this,ListNoteActivity.class);
+        startActivity(intent);
+    }
+
+    public void onClickEntertainment(View view) {
+        nameCategory ="Entertainment";
+        Intent intent = new Intent(CategoryActivity.this,ListNoteActivity.class);
+        startActivity(intent);
+    }
+
+    public void onClickMyJob(View view) {
+        nameCategory ="MyJob";
+        Intent intent = new Intent(CategoryActivity.this,ListNoteActivity.class);
+        startActivity(intent);
     }
 }
