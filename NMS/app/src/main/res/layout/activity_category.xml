@@ -108,12 +108,11 @@
                             android:gravity="center">
 
                             <ImageView
+                                android:layout_weight="8"
                                 android:layout_width="120dp"
                                 android:layout_height="0dp"
-                                android:layout_marginBottom="10dp"
-                                android:layout_weight="8"
-                                android:onClick="onClickExercise"
-                                android:src="@drawable/ic_action_exercise" />
+                                android:src="@drawable/ic_action_exercise"
+                                android:layout_marginBottom="10dp"/>
 
                             <TextView
                                 android:layout_weight="2"
@@ -148,12 +147,11 @@
                             android:gravity="center">
 
                             <ImageView
+                                android:layout_weight="8"
                                 android:layout_width="120dp"
                                 android:layout_height="0dp"
-                                android:layout_marginBottom="10dp"
-                                android:layout_weight="8"
-                                android:onClick="onClickHomeWork"
-                                android:src="@drawable/ic_action_homework" />
+                                android:src="@drawable/ic_action_homework"
+                                android:layout_marginBottom="10dp"/>
 
                             <TextView
                                 android:layout_weight="2"
@@ -189,12 +187,11 @@
                             android:gravity="center">
 
                             <ImageView
+                                android:layout_weight="8"
                                 android:layout_width="120dp"
                                 android:layout_height="0dp"
-                                android:layout_marginBottom="10dp"
-                                android:layout_weight="8"
-                                android:onClick="onClickMeeting"
-                                android:src="@drawable/ic_action_meeting" />
+                                android:src="@drawable/ic_action_meeting"
+                                android:layout_marginBottom="10dp"/>
 
                             <TextView
                                 android:layout_weight="2"
@@ -229,12 +226,11 @@
                             android:gravity="center">
 
                             <ImageView
+                                android:layout_weight="8"
                                 android:layout_width="120dp"
                                 android:layout_height="0dp"
-                                android:layout_marginBottom="10dp"
-                                android:layout_weight="8"
-                                android:onClick="onClickEntertainment"
-                                android:src="@drawable/ic_action_entertainment" />
+                                android:src="@drawable/ic_action_entertainment"
+                                android:layout_marginBottom="10dp"/>
 
                             <TextView
                                 android:layout_weight="2"
@@ -271,12 +267,11 @@
                             android:gravity="center">
 
                             <ImageView
+                                android:layout_weight="8"
                                 android:layout_width="120dp"
                                 android:layout_height="0dp"
-                                android:layout_marginBottom="10dp"
-                                android:layout_weight="8"
-                                android:onClick="onClickMyJob"
-                                android:src="@drawable/ic_action_job" />
+                                android:src="@drawable/ic_action_job"
+                                android:layout_marginBottom="10dp"/>
 
                             <TextView
                                 android:layout_weight="2"
@@ -337,7 +332,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="tranvudpqn123@gmail.com"
-                        android:id="@+id/textUsername"
+                        android:id="@+id/txtNameUser"
                         android:textColor="#fff"
                         android:textSize="16sp"/>
 
