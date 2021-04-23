@@ -38,16 +38,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Deque;
 
-import tranvu203107.dmt.nms.model.Priority;
+import tranvu203107.dmt.nms.model.Status;
 
-public class ListPriorityActivity extends AppCompatActivity {
+public class ListStatusActivity extends AppCompatActivity {
 
     //Create database name and her path
     String DATABASE_NAME="myDB.sqlite";
     String DB_PATH_SUFFIX="/databases/";
     SQLiteDatabase database = null;
 
-    FloatingActionButton btnAlertDialog_AddPriority;
+    FloatingActionButton btnAlertDialog_AddStatus;
 
     Toolbar toolbar;
     DrawerLayout drawerLayout;
@@ -65,13 +65,13 @@ public class ListPriorityActivity extends AppCompatActivity {
     private static final int MENU_ITEM_DELETE = 1;
 
     //Define RecyclerView and Adapter variable
-    RecyclerView PriorityListRecycler;
-    PriorityAdapter PriorityAdapter;
+    RecyclerView StatusListRecycler;
+    StatusAdapter StatusAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_priority);
+        setContentView(R.layout.activity_list_status);
         database = openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
 
         //import myDB.sqlite to project
@@ -83,7 +83,7 @@ public class ListPriorityActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.listView);
         listViewAccount = (ListView) findViewById(R.id.listViewAccount);
         navigationView = (NavigationView) findViewById(R.id.navigationView);
-        PriorityListRecycler = findViewById(R.id.priorityList);
+        StatusListRecycler = findViewById(R.id.statusList);
 
         // Config toolbar
         setSupportActionBar(toolbar);
@@ -100,8 +100,8 @@ public class ListPriorityActivity extends AppCompatActivity {
         arrList = new ArrayList<ItemMenu>();
         arrList.add(new ItemMenu("Home", R.drawable.ic_action_home));
         arrList.add(new ItemMenu("Category", R.drawable.ic_action_category));
-        arrList.add(new ItemMenu("Priority", R.drawable.ic_action_priority));
-        arrList.add(new ItemMenu("Priority", R.drawable.ic_action_priority));
+        arrList.add(new ItemMenu("Status", R.drawable.ic_action_status));
+        arrList.add(new ItemMenu("Status", R.drawable.ic_action_status));
         arrList.add(new ItemMenu("Note", R.drawable.ic_action_note));
 
         menuAdapter = new MenuAdapter(this, R.layout.item_row_menu, arrList);
@@ -116,9 +116,9 @@ public class ListPriorityActivity extends AppCompatActivity {
         listViewAccount.setAdapter(menuAdapter);
 
         // event btn dialog
-        btnAlertDialog_AddPriority = (FloatingActionButton) findViewById(R.id.btn_add_priority);
+        btnAlertDialog_AddStatus = (FloatingActionButton) findViewById(R.id.btn_add_status);
 
-        btnAlertDialog_AddPriority.setOnClickListener(new View.OnClickListener() {
+        btnAlertDialog_AddStatus.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -126,29 +126,29 @@ public class ListPriorityActivity extends AppCompatActivity {
             }
         });
 
-        //Get Priority List for Adapter
-        LoadPriorityList();
+        //Get Status List for Adapter
+        LoadStatusList();
     }
 
-    //Get Priority List for Adapter
-    public void LoadPriorityList(){
-        PriorityAdapter = new PriorityAdapter(this, PriorityList());
-        PriorityListRecycler.setAdapter(PriorityAdapter);
+    //Get Status List for Adapter
+    public void LoadStatusList(){
+        StatusAdapter = new StatusAdapter(this, StatusList());
+        StatusListRecycler.setAdapter(StatusAdapter);
         // Register the RecyclerView for Context menu
-        registerForContextMenu(PriorityListRecycler);
+        registerForContextMenu(StatusListRecycler);
     }
 
     //Display Dialog
-    public void displayAlertDialog(int flag, int PriorityId) {
+    public void displayAlertDialog(int flag, int statusId) {
 
         LayoutInflater inflater = getLayoutInflater();
-        View alertLayout = inflater.inflate(R.layout.add_edit_priority_dialog, null);
-        EditText txtPriority= alertLayout.findViewById(R.id.editText_priorityName);
+        View alertLayout = inflater.inflate(R.layout.add_edit_status_dialog, null);
+        EditText txtStatus= alertLayout.findViewById(R.id.editText_statusName);
 
-        //Đổ dữ liệu lên dialog khi sửa Priority
+        //Đổ dữ liệu lên dialog khi sửa Status
         if(flag == 1){
-            Priority Priority = getPriorityById(PriorityId);
-            txtPriority.setText(Priority.getPriority());
+            Status status = getStatusById(statusId);
+            txtStatus.setText(status.getStatus());
         }
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -168,10 +168,10 @@ public class ListPriorityActivity extends AppCompatActivity {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    String Priority = txtPriority.getText().toString();
+                    String Status = txtStatus.getText().toString();
                     String CreatedDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date(System.currentTimeMillis()));
-                    addPriority(new Priority(0, Priority, CreatedDate));
-                    LoadPriorityList();
+                    addStatus(new Status(0, Status, CreatedDate));
+                    LoadStatusList();
                 }
             });
         }
@@ -180,8 +180,8 @@ public class ListPriorityActivity extends AppCompatActivity {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    editPriority(new Priority(PriorityId, txtPriority.getText().toString(), ""));
-                    LoadPriorityList();
+                    editStatus(new Status(statusId, txtStatus.getText().toString(), ""));
+                    LoadStatusList();
                 }
             });
         }
@@ -196,10 +196,10 @@ public class ListPriorityActivity extends AppCompatActivity {
                 info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
         if(item.getItemId() == MENU_ITEM_EDIT){
-            displayAlertDialog(1, PriorityList().get(item.getGroupId()).getId());
+            displayAlertDialog(1, StatusList().get(item.getGroupId()).getId());
         }
         else if(item.getItemId() == MENU_ITEM_DELETE){
-            deletePriority(PriorityList().get(item.getGroupId()).getId());
+            deleteStatus(StatusList().get(item.getGroupId()).getId());
         }
         else {
             return false;
@@ -215,14 +215,14 @@ public class ListPriorityActivity extends AppCompatActivity {
             File dbFile = getDatabasePath(DATABASE_NAME);
             if (!dbFile.exists()) {
                 copyDatabaseFromAsset();
-                Toast.makeText(ListPriorityActivity.this, "Sao chép thành công", Toast.LENGTH_LONG).show();
+                Toast.makeText(ListStatusActivity.this, "Sao chép thành công", Toast.LENGTH_LONG).show();
             }
             else
-                Toast.makeText(ListPriorityActivity.this,"Khong sao chep",Toast.LENGTH_LONG).show();
+                Toast.makeText(ListStatusActivity.this,"Khong sao chep",Toast.LENGTH_LONG).show();
         }
         catch (Exception ex)
         {
-            Toast.makeText(ListPriorityActivity.this,ex.toString(),Toast.LENGTH_LONG).show();
+            Toast.makeText(ListStatusActivity.this,ex.toString(),Toast.LENGTH_LONG).show();
             Log.e("LOI",ex.toString());
         }
     }
@@ -256,61 +256,61 @@ public class ListPriorityActivity extends AppCompatActivity {
 
     }
 
-    //Hien thi Priority
-    private ArrayList<Priority> PriorityList() {
+    //Hien thi Status
+    private ArrayList<Status> StatusList() {
         //database = openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
-        Cursor cursor = database.rawQuery("select * from Priority",null);
+        Cursor cursor = database.rawQuery("select * from Status",null);
         //aP.clear();
-        ArrayList<Priority> arrPriority = new ArrayList<Priority>();
-        //Toast.makeText(ListPriorityActivity.this,"Da load",Toast.LENGTH_LONG).show();
+        ArrayList<Status> arrStatus = new ArrayList<Status>();
+        //Toast.makeText(ListStatusActivity.this,"Da load",Toast.LENGTH_LONG).show();
         while(cursor.moveToNext())
         {
             int id = cursor.getInt(0);
-            String PriorityName = cursor.getString(1);
+            String StatusName = cursor.getString(1);
             String createdDate = cursor.getString(2);
-            Priority Priority = new Priority(id, PriorityName, createdDate);
-            arrPriority.add(Priority);
+            Status Status = new Status(id, StatusName, createdDate);
+            arrStatus.add(Status);
         }
         cursor.close();
-        return arrPriority;
+        return arrStatus;
     }
 
-    //Thêm Priority
-    private void addPriority(Priority Priority){
+    //Thêm Status
+    private void addStatus(Status Status){
         ContentValues values=new ContentValues();
-        values.put("Priority",Priority.getPriority());
-        values.put("createdDate", Priority.getCreatedDate());
-        database.insert("Priority",null,values);
+        values.put("Status",Status.getStatus());
+        values.put("createdDate", Status.getCreatedDate());
+        database.insert("Status",null,values);
     }
 
     //Lấy Satus theo id
-    private Priority getPriorityById(int id){
-        Cursor cursor = database.rawQuery("select * from Priority where id ='" + id + "'",null);
+    private Status getStatusById(int id){
+        Cursor cursor = database.rawQuery("select * from Status where id ='" + id + "'",null);
         cursor.moveToFirst();
         id = cursor.getInt(0);
-        String PriorityName = cursor.getString(1);
+        String StatusName = cursor.getString(1);
         String createdDate = cursor.getString(2);
-        Priority Priority = new Priority(id, PriorityName, createdDate);
-        return Priority;
+        Status Status = new Status(id, StatusName, createdDate);
+        return Status;
     }
 
-    //Sửa Priority
-    private void editPriority(Priority Priority){
+    //Sửa Status
+    private void editStatus(Status status){
 
-        //database.execSQL("Update Priority Set Priority = '" + Priority.getPriority() + "' Where id = '" + Priority.getId() + "'",null);
+        //database.execSQL("Update Status Set status = '" + status.getStatus() + "' Where id = '" + status.getId() + "'",null);
         ContentValues values = new ContentValues();
-        values.put("Priority",Priority.getPriority());
+        values.put("Status",status.getStatus());
 
         // updating row
-        database.update("Priority", values, "id" + " = ?",
-                new String[]{String.valueOf(Priority.getId())});
-        Toast.makeText(ListPriorityActivity.this, "Đã lưu",Toast.LENGTH_LONG).show();
+        database.update("Status", values, "id" + " = ?",
+                new String[]{String.valueOf(status.getId())});
+        Toast.makeText(ListStatusActivity.this, "Đã lưu",Toast.LENGTH_LONG).show();
     }
-    //Xóa Priority
-    private  void deletePriority(int id){
-        database.delete("Priority", "id" + " = ?",
+    //Xóa Status
+    private  void deleteStatus(int id){
+        database.delete("Status", "id" + " = ?",
                 new String[] { String.valueOf(id) });
-        LoadPriorityList();
-        Toast.makeText(ListPriorityActivity.this, "Đã xóa",Toast.LENGTH_LONG).show();
+        LoadStatusList();
+        Toast.makeText(ListStatusActivity.this, "Đã xóa",Toast.LENGTH_LONG).show();
     }
 }
