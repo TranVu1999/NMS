@@ -56,7 +56,7 @@
                     android:orientation="vertical">
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputName"
+                        android:id="@+id/nameContainer"
                         style="@style/parent"
                         android:layout_marginTop="@dimen/loginViewsMargin">
 
@@ -67,10 +67,11 @@
                             android:inputType="textPersonName"
                             android:maxLines="1"/>
 
+
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputEmail"
+                        android:id="@+id/emailContainer"
                         style="@style/parent"
                         android:layout_marginTop="@dimen/loginViewsMargin">
 
@@ -84,7 +85,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputMobile"
+                        android:id="@+id/passwordContainer"
                         style="@style/parent"
                         android:layout_marginTop="@dimen/loginViewsMargin">
 
@@ -98,7 +99,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputPassword"
+                        android:id="@+id/comfirmPasswordContainer"
                         style="@style/parent"
                         android:layout_marginTop="@dimen/loginViewsMargin">
 
