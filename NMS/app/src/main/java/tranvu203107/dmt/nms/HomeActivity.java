@@ -8,7 +8,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -62,6 +65,14 @@ public class HomeActivity extends AppCompatActivity {
 
         menuAdapter = new MenuAdapter(this, R.layout.item_row_menu, arrList);
         listView.setAdapter(menuAdapter);
+        
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // position trả về vị trí click trên listview -> bắt đầu từ 0
+                Toast.makeText(HomeActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // action menu account
         arrListAccount = new ArrayList<ItemMenu>();
