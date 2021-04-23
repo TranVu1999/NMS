@@ -15,14 +15,23 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
-
         <activity
+<<<<<<< HEAD
+            android:name=".ChartActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+=======
             android:name=".DemoDialogActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".ChartActivity"
             android:theme="@style/AppTheme.NoActionBar">
+>>>>>>> 4e8d19936c0f5ae8b98f3803005573aa528a569b
         </activity>
         <activity
             android:name=".ListNoteActivity"
@@ -34,12 +43,16 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".HomeActivity"
+<<<<<<< HEAD
+            android:theme="@style/AppTheme.NoActionBar" />
+=======
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+>>>>>>> 4e8d19936c0f5ae8b98f3803005573aa528a569b
         <activity
             android:name=".RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
