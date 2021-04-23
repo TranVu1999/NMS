@@ -13,14 +13,18 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class DemoDialogActivity extends AppCompatActivity {
 
     Button btnAddCate, btnAddNote;
     Dialog dialog;
+    Dialog planDateDialog;
+    String date;
 
     Spinner spinnerCate, spinnerPriority, spinnerStatus;
 
@@ -33,6 +37,7 @@ public class DemoDialogActivity extends AppCompatActivity {
         btnAddNote = (Button)findViewById(R.id.btnAddNote);
 
         dialog = new Dialog(this);
+        planDateDialog = new Dialog(this);
         spinnerCate = (Spinner)findViewById(R.id.spinnerCate);
 
         btnAddCate.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +84,7 @@ public class DemoDialogActivity extends AppCompatActivity {
             }
         });
 
+
         OptionAdapter optionsAdapter;
         spinnerCate = dialog.findViewById(R.id.spinnerCate);
         spinnerPriority = dialog.findViewById(R.id.spinnerPrioroty);
@@ -114,18 +120,38 @@ public class DemoDialogActivity extends AppCompatActivity {
         optionsAdapter = new OptionAdapter(this, R.layout.layout_option_item, arrOptionStatus);
         spinnerStatus.setAdapter(optionsAdapter);
 
-        spinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerCate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 // your code here
-                Toast.makeText(getApplicationContext(), "This is a message" + position, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "You pick category " + position, Toast.LENGTH_LONG).show();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
                 // your code here
             }
-
+        });
+        spinnerPriority.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // your code here
+                Toast.makeText(getApplicationContext(), "You pick priority " + position, Toast.LENGTH_LONG).show();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+        });
+        spinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // your code here
+                Toast.makeText(getApplicationContext(), "You pick status " + position, Toast.LENGTH_LONG).show();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
         });
 
         dialog.show();
@@ -133,11 +159,22 @@ public class DemoDialogActivity extends AppCompatActivity {
 
     private void openSelectDateDialog(){
         //mở layout chọn ngày lên
-        dialog.setContentView(R.layout.layout_select_plandate);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        planDateDialog.setContentView(R.layout.layout_select_plandate);
+        planDateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+
+        Button btnOk, btnCancel;
+        btnOk = planDateDialog.findViewById(R.id.btnOk);
+        btnCancel = planDateDialog.findViewById(R.id.btnCancel);
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                planDateDialog.dismiss();
+            }
+        });
 
         CalendarView calendarView;
-        calendarView = dialog.findViewById(R.id.cldPlanDate);
+        calendarView = planDateDialog.findViewById(R.id.cldPlanDate);
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 
@@ -148,11 +185,20 @@ public class DemoDialogActivity extends AppCompatActivity {
                 String  Year = String.valueOf(year);
                 String  Month = String.valueOf(month);
 
-                Toast toast = Toast.makeText(getApplicationContext(), Year+"/"+Month+"/"+curDate, Toast.LENGTH_LONG);
-                toast.show();
+                date = curDate+'/'+Month+'/'+Year;
             }
         });
 
-        dialog.show();
+
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView lblPlanDate = dialog.findViewById(R.id.lblPlanDate);
+                lblPlanDate.setText(date);
+                planDateDialog.dismiss();
+            }
+        });
+
+        planDateDialog.show();
     }
 }
