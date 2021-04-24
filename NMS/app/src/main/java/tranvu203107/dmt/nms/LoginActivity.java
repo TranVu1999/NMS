@@ -9,14 +9,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
     String DATABASE_NAME="myDB.sqlite";
@@ -25,6 +29,8 @@ public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
     EditText txtEmail;
     EditText txtPassword;
+    LinearLayout emailContainer, passwordContainer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +52,9 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = (Button) findViewById(R.id.btnLogin);
         txtEmail = (EditText) findViewById(R.id.txtEmailChange);
         txtPassword = (EditText)findViewById((R.id.txtPasswordLogin));
+        emailContainer = (LinearLayout)findViewById(R.id.emailContainer);
+        passwordContainer = (LinearLayout)findViewById(R.id.passwordContainer);
+
     }
     private void addEvents() {
         addControls();
@@ -58,28 +67,63 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String query = "select * from USER where Email = '" + txtEmail.getText().toString() + "' and Password = '" + txtPassword.getText().toString() +"'";
-                Cursor cursor = null;
-                cursor   = database.rawQuery(query,null);
-                if(txtPassword.getText().toString().isEmpty()||txtEmail.getText().toString().isEmpty()){
-                    Toast.makeText(LoginActivity.this, "All field must be fill!", Toast.LENGTH_LONG).show();
+                Boolean flag = true;
+                String email = txtEmail.getText().toString();
+                String password = txtPassword.getText().toString();
+
+                // Check email
+                if(email.isEmpty()){
+                    flag = false;
+                    try {
+                        TextView emailNotify = findViewById(R.id.emailNotify);
+                        ((ViewGroup) emailNotify.getParent()).removeView(emailNotify);
+                    }catch (Exception e){}
+
+
+                    TextView txtEmailErr = new TextView(LoginActivity.this, null, 0, R.style.notifyWarning);
+                    txtEmailErr.setId(R.id.emailNotify);
+                    txtEmailErr.setText("You must not leave email blank");
+                    emailContainer.addView(txtEmailErr);
                 }
-                else if(cursor.getCount() == 1 ) {
-                    int Id;
-                    String Name;
-                    //USER user =new USER();
-                    // get id's user.
-                    cursor.moveToFirst();
-                    Id = cursor.getInt(0);
-                    Name = cursor.getString(1);
-                    Toast.makeText(LoginActivity.this, "Successfully login!", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(LoginActivity.this,HomeActivity.class).putExtra("Id", Id).putExtra("Name",Name);
-                    startActivity(intent);
+
+                // Check password
+                if(password.isEmpty()){
+                    flag = false;
+                    try {
+                        TextView passowrdNotify = findViewById(R.id.passowrdNotify);
+                        ((ViewGroup) passowrdNotify.getParent()).removeView(passowrdNotify);
+                    }catch (Exception e){}
+
+                    TextView txtPasswordErr = new TextView(LoginActivity.this, null, 0, R.style.notifyWarning);
+                    txtPasswordErr.setId(R.id.passowrdNotify);
+                    txtPasswordErr.setText("You must not leave password blank");
+                    passwordContainer.addView(txtPasswordErr);
                 }
-                else{
-                    Toast.makeText(LoginActivity.this, "Invalid incredent!", Toast.LENGTH_LONG).show();
+
+                // All good
+                if(false){
+                    String query = "select * from USER where Email = '" + txtEmail.getText().toString() + "' and Password = '" + txtPassword.getText().toString() +"'";
+                    Cursor cursor = null;
+                    cursor = database.rawQuery(query,null);
+
+                    if(cursor.getCount() == 1 ) {
+                        int Id;
+                        String Name;
+                        //USER user =new USER();
+                        // get id's user.
+                        cursor.moveToFirst();
+                        Id = cursor.getInt(0);
+                        Name = cursor.getString(1);
+                        Toast.makeText(LoginActivity.this, "Successfully login!", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(LoginActivity.this,HomeActivity.class).putExtra("Id", Id).putExtra("Name",Name);
+                        startActivity(intent);
+                    }
+                    else{
+                        Toast.makeText(LoginActivity.this, "Invalid incredent!", Toast.LENGTH_LONG).show();
+                    }
+                    cursor.close();
                 }
-                cursor.close();
+
             }
         });
     }

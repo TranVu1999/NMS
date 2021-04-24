@@ -43,22 +43,37 @@
                     android:layout_alignParentRight="true"
                     android:src="@drawable/ic_register_hero" />
             </RelativeLayout>
+           
+            <LinearLayout
+                android:id="@+id/emailContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/loginViewsMargin">
 
-            <EditText
-                android:id="@+id/txtEmailChange"
-                style="@style/modifiedEditText"
-                android:layout_marginTop="@dimen/loginViewsMargin"
-                android:hint="@string/login_email_hint"
-                android:inputType="textAutoComplete|textEmailAddress"
-                android:maxLines="1" />
+                <EditText
+                    android:id="@+id/txtEmailChange"
+                    style="@style/modifiedEditText"
+                    android:hint="@string/login_email_hint"
+                    android:inputType="textAutoComplete|textEmailAddress"
+                    android:maxLines="1" />
+            </LinearLayout>
 
-            <EditText
-                android:id="@+id/txtPasswordLogin"
-                style="@style/modifiedEditText"
-                android:layout_marginTop="@dimen/loginViewsMargin"
-                android:hint="@string/login_password_hint"
-                android:inputType="textPassword"
-                android:maxLines="1" />
+            <LinearLayout
+                android:id="@+id/passwordContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/loginViewsMargin">
+
+                <EditText
+                    android:id="@+id/txtPasswordLogin"
+                    style="@style/modifiedEditText"
+                    android:hint="@string/login_password_hint"
+                    android:inputType="textPassword"
+                    android:maxLines="1" />
+            </LinearLayout>
+
 
             <TextView
                 style="@style/viewParent"
