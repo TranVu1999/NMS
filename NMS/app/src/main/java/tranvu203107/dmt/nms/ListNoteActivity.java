@@ -4,10 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.appcompat.widget.VectorEnabledTintResources;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
@@ -27,7 +25,6 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +47,8 @@ public class ListNoteActivity extends AppCompatActivity {
     ListView listView;
     ListView listViewAccount;
     EditText textAddNote;
+    EditText editNoteName;
+    Button btnCloseDialogs;
 
     ArrayList<ItemMenu> arrList;
     ArrayList<ItemMenu> arrListAccount;
@@ -62,6 +61,7 @@ public class ListNoteActivity extends AppCompatActivity {
     FloatingActionButton btnAddNote;
     Dialog dialog;
     Dialog planDateDialog;
+
     String date;
     public static String statusName;
     public static String cateName;
@@ -76,6 +76,14 @@ public class ListNoteActivity extends AppCompatActivity {
     public static String DATABASE_NAME="myDB.sqlite";
     public static String DB_PATH_SUFFIX="/databases/";
     public static SQLiteDatabase database = null;
+
+    public static String statusName;
+    public static String cateName;
+    public static String priorityName;
+    public static String planDate;
+    public static int cateIndex;
+    public static int priIndex;
+    public static int stIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +147,7 @@ public class ListNoteActivity extends AppCompatActivity {
                 openAddNoteDialog();
             }
         });
+
     }
 
     @Override
@@ -160,9 +169,11 @@ public class ListNoteActivity extends AppCompatActivity {
     private void openAddNoteDialog() {
         dialog.setContentView(R.layout.layout_add_note);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
+        dialog.setCancelable(false);
+        editNoteName=(EditText) dialog.findViewById(R.id.editNoteName);
+        btnCloseDialogs=(Button)dialog.findViewById(R.id.btnCloseDialog);
         Button btnCloseDialog = dialog.findViewById(R.id.btnCloseDialog);
-        Button btnSaveData = dialog.findViewById(R.id.btnSaveData);
+        Button btnSaveData = dialog.findViewById(R.id.btnSaveDataAdd);
         Button btnSelectPlanDate = dialog.findViewById(R.id.btnSelectPlanDate);
         btnSelectPlanDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,33 +182,58 @@ public class ListNoteActivity extends AppCompatActivity {
             }
         });
 
+        database = openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
 
         OptionAdapter optionsAdapter;
         spinnerCate = dialog.findViewById(R.id.spinnerCate);
         spinnerPriority = dialog.findViewById(R.id.spinnerPrioroty);
         spinnerStatus = dialog.findViewById(R.id.spinnerStatus);
         ArrayList<Option> arrOptionCate;
-        // action menu
         arrOptionCate = new ArrayList<Option>();
-        arrOptionCate.add(new Option("Exercise", "1"));
-        arrOptionCate.add(new Option("Homework", "2"));
-        arrOptionCate.add(new Option("Meeting", "3"));
-        arrOptionCate.add(new Option("Entertainment", "4"));
-        arrOptionCate.add(new Option("My Job", "5"));
+        // action cate
+        Cursor cursor = database.rawQuery("SELECT Id,NAME\n" +
+                "FROM CATEGORY",null);
+        while(cursor.moveToNext())
+        {
+            int id=cursor.getInt(0);
+            String cateName = cursor.getString(1);
+            arrOptionCate.add(new Option(cateName,id+""));
+
+        }
+        cursor.close();
+
 
         ArrayList<Option> arrOptionPriority;
-        // action menu
+        // action Priority
         arrOptionPriority = new ArrayList<Option>();
-        arrOptionPriority.add(new Option("High", "1"));
-        arrOptionPriority.add(new Option("Medium", "2"));
-        arrOptionPriority.add(new Option("Low", "3"));
+
+
+        Cursor cursorPriority = database.rawQuery("SELECT Id,Priority\n" +
+                "FROM PRIORITY",null);
+        while(cursorPriority.moveToNext())
+        {
+            int id=cursorPriority.getInt(0);
+            String priorityName = cursorPriority.getString(1);
+            arrOptionPriority.add(new Option(priorityName,id+""));
+
+        }
+        cursorPriority.close();
+
 
         ArrayList<Option> arrOptionStatus;
-        // action menu
+        // action Status
         arrOptionStatus = new ArrayList<Option>();
-        arrOptionStatus.add(new Option("Done", "1"));
-        arrOptionStatus.add(new Option("Processing", "2"));
-        arrOptionStatus.add(new Option("Pending", "3"));
+
+        Cursor cursorStatus = database.rawQuery("SELECT Id,Status \n" +
+                "FROM STATUS",null);
+        while(cursorStatus.moveToNext())
+        {
+            int id=cursorStatus.getInt(0);
+            String statusName = cursorStatus.getString(1);
+            arrOptionStatus.add(new Option(statusName,id+""));
+
+        }
+        cursorPriority.close();
 
         optionsAdapter = new OptionAdapter(this, R.layout.layout_option_item, arrOptionCate);
         spinnerCate.setAdapter(optionsAdapter);
@@ -416,7 +452,7 @@ public class ListNoteActivity extends AppCompatActivity {
                 String  Year = String.valueOf(year);
                 String  Month = String.valueOf(month);
 
-                date = curDate+'/'+Month+'/'+Year;
+                planDate = curDate+'/'+Month+'/'+Year;
             }
         });
 
@@ -425,7 +461,7 @@ public class ListNoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 TextView lblPlanDate = dialog.findViewById(R.id.lblPlanDate);
-                lblPlanDate.setText(date);
+                lblPlanDate.setText(planDate);
                 planDateDialog.dismiss();
             }
         });
@@ -611,8 +647,6 @@ public class ListNoteActivity extends AppCompatActivity {
                 copyDatabaseFromAsset();
                 Toast.makeText(ListNoteActivity.this, "Sao chép thành công", Toast.LENGTH_LONG).show();
             }
-            else
-                Toast.makeText(ListNoteActivity.this,"Khong sao chep",Toast.LENGTH_LONG).show();
         }
         catch (Exception ex)
         {
@@ -668,8 +702,33 @@ public class ListNoteActivity extends AppCompatActivity {
 
         long kq =ListNoteActivity.database.insert("NOTE",null,newValues);
         if(kq>0)
-            Toast.makeText(ListNoteActivity.this,"Them thanh cong",Toast.LENGTH_LONG).show();
+            Toast.makeText(ListNoteActivity.this,"Thêm thành công",Toast.LENGTH_LONG).show();
         else
-            Toast.makeText(ListNoteActivity.this,"Them that bai",Toast.LENGTH_LONG).show();
+            Toast.makeText(ListNoteActivity.this,"Thêm thất bại",Toast.LENGTH_LONG).show();
+    }
+
+    public void SaveDataAdd(View view) {
+        String noteName =editNoteName.getText().toString();
+        ContentValues newValues = new ContentValues();
+       // newValues.put("Id",8);
+        newValues.put("Name",noteName);
+        newValues.put("UserId",1);
+        newValues.put("CateId",cateIndex);
+        newValues.put("PriorityId",priIndex);
+        newValues.put("StatusId",stIndex);
+        newValues.put("PlanDate",planDate);
+        newValues.put("CreatedDate",java.time.LocalDate.now().toString());
+
+        long kq =ListNoteActivity.database.insert("NOTE",null,newValues);
+        if(kq>0) {
+            Toast.makeText(ListNoteActivity.this, "Thêm thành công", Toast.LENGTH_LONG).show();
+            showListNote();
+        }
+        else
+            Toast.makeText(ListNoteActivity.this,"Thêm thất bại",Toast.LENGTH_LONG).show();
+    }
+    public void eCloseAddNote(View view)
+    {
+        finish();
     }
 }
