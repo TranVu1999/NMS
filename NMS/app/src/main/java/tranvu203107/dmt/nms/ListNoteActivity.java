@@ -1,6 +1,7 @@
 package tranvu203107.dmt.nms;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.widget.VectorEnabledTintResources;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -123,7 +125,7 @@ public class ListNoteActivity extends AppCompatActivity {
 
         // list note
         arrNote = new ArrayList<Note>();
-        showListNote();
+        //showListNote();
     }
 
     private void addControls() {
@@ -147,7 +149,7 @@ public class ListNoteActivity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), "sửa phần tử thứ "+ item.getGroupId(), Toast.LENGTH_LONG).show();
                 return true;
             case 122:
-                noteAdapter.delete(item.getGroupId());    //hàm xử lý xóa
+                deleteItem(noteAdapter.delete(item.getGroupId()));    //hàm xử lý xóa
                 //Toast.makeText(getApplicationContext(), "xóa phần tử thứ "+ item.getGroupId(), Toast.LENGTH_LONG).show();
                 return true;
             default:
@@ -246,7 +248,7 @@ public class ListNoteActivity extends AppCompatActivity {
     private void openEditNoteDialog(Note currentNote) {
         dialog.setContentView(R.layout.layout_add_note);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setCancelable(false);
+        //dialog.setCancelable(false);
 
         EditText txtNoteName = dialog.findViewById(R.id.editNoteName);
         TextView lblPlanDate = dialog.findViewById(R.id.lblPlanDate);
@@ -373,6 +375,19 @@ public class ListNoteActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    private void deleteItem(Note currentNote) {
+
+        int kq = database.delete("NOTE", "Id=?", new String[]{currentNote.getId() + ""});
+        if (kq > 0) {
+            Toast.makeText(getApplicationContext(), "Xóa thành công", Toast.LENGTH_LONG).show();
+            onResume();
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Xóa thất bại", Toast.LENGTH_LONG).show();
+            onResume();
+        }
+    }
+
     private void openSelectDateDialog(){
         //mở layout chọn ngày lên
         planDateDialog.setContentView(R.layout.layout_select_plandate);
@@ -416,6 +431,12 @@ public class ListNoteActivity extends AppCompatActivity {
         });
 
         planDateDialog.show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showListNote();
     }
 
     private void showListNote() {

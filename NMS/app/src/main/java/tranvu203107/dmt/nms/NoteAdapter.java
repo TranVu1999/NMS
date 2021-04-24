@@ -90,8 +90,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         return selectedNote;
     }
 
-    public void delete(int position){
+    public Note delete(int position){
         //xử lý xóa
         Note selectedNote = listNote.get(position); //lấy được thông tin note đang chọn
+        return selectedNote;
     }
 }
