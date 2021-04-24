@@ -467,8 +467,6 @@ public class ListNoteActivity extends AppCompatActivity {
                 copyDatabaseFromAsset();
                 Toast.makeText(ListNoteActivity.this, "Sao chép thành công", Toast.LENGTH_LONG).show();
             }
-            else
-                Toast.makeText(ListNoteActivity.this,"Khong sao chep",Toast.LENGTH_LONG).show();
         }
         catch (Exception ex)
         {
@@ -524,9 +522,9 @@ public class ListNoteActivity extends AppCompatActivity {
 
         long kq =ListNoteActivity.database.insert("NOTE",null,newValues);
         if(kq>0)
-            Toast.makeText(ListNoteActivity.this,"Them thanh cong",Toast.LENGTH_LONG).show();
+            Toast.makeText(ListNoteActivity.this,"Thêm thành công",Toast.LENGTH_LONG).show();
         else
-            Toast.makeText(ListNoteActivity.this,"Them that bai",Toast.LENGTH_LONG).show();
+            Toast.makeText(ListNoteActivity.this,"Thêm thất bại",Toast.LENGTH_LONG).show();
     }
 
     public void SaveDataAdd(View view) {
@@ -543,11 +541,11 @@ public class ListNoteActivity extends AppCompatActivity {
 
         long kq =ListNoteActivity.database.insert("NOTE",null,newValues);
         if(kq>0) {
-            Toast.makeText(ListNoteActivity.this, "Them thanh cong", Toast.LENGTH_LONG).show();
+            Toast.makeText(ListNoteActivity.this, "Thêm thành công", Toast.LENGTH_LONG).show();
             showListNote();
         }
         else
-            Toast.makeText(ListNoteActivity.this,"Them that bai",Toast.LENGTH_LONG).show();
+            Toast.makeText(ListNoteActivity.this,"Thêm thất bại",Toast.LENGTH_LONG).show();
     }
     public void eCloseAddNote(View view)
     {
