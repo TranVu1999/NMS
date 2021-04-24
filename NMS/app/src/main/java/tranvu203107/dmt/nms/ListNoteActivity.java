@@ -77,13 +77,6 @@ public class ListNoteActivity extends AppCompatActivity {
     public static String DB_PATH_SUFFIX="/databases/";
     public static SQLiteDatabase database = null;
 
-    public static String statusName;
-    public static String cateName;
-    public static String priorityName;
-    public static String planDate;
-    public static int cateIndex;
-    public static int priIndex;
-    public static int stIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -289,7 +282,7 @@ public class ListNoteActivity extends AppCompatActivity {
         EditText txtNoteName = dialog.findViewById(R.id.editNoteName);
         TextView lblPlanDate = dialog.findViewById(R.id.lblPlanDate);
         Button btnCloseDialog = dialog.findViewById(R.id.btnCloseDialog);
-        Button btnSaveData = dialog.findViewById(R.id.btnSaveData);
+        //Button btnSaveData = dialog.findViewById(R.id.btnSaveData);
         Button btnSelectPlanDate = dialog.findViewById(R.id.btnSelectPlanDate);
         btnSelectPlanDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -374,7 +367,7 @@ public class ListNoteActivity extends AppCompatActivity {
                 // your code here
                 cateIndex=position+1;
                 cateName= arrOptionCate.get(position).title.toString();
-                Toast.makeText(getApplicationContext(), "You pick category "+ cateName , Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "You pick category "+ cateName , Toast.LENGTH_LONG).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
@@ -387,7 +380,7 @@ public class ListNoteActivity extends AppCompatActivity {
                 // your code here
                 priIndex=position+1;
                 priorityName = arrOptionPriority.get(position).title.toString();
-                Toast.makeText(getApplicationContext(), "You pick priority " + priorityName, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "You pick priority " + priorityName, Toast.LENGTH_LONG).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
@@ -400,7 +393,7 @@ public class ListNoteActivity extends AppCompatActivity {
                 // your code here
                 stIndex=position+1;
                 statusName = arrOptionStatus.get(position).title.toString();
-                Toast.makeText(getApplicationContext(), "You pick status " + statusName, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "You pick status " + statusName, Toast.LENGTH_LONG).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {

@@ -6,10 +6,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,6 +25,10 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.google.android.material.navigation.NavigationView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
@@ -34,6 +43,10 @@ public class HomeActivity extends AppCompatActivity {
     ArrayList<ItemMenu> arrList;
     ArrayList<ItemMenu> arrListAccount;
     MenuAdapter menuAdapter;
+
+    public static String DATABASE_NAME="myDB.sqlite";
+    public static String DB_PATH_SUFFIX="/databases/";
+    public static SQLiteDatabase database = null;
 
     private float[] yData = {15f,30f,55f};  //giá trị % của các Status
     private String[] xData = {"Pending","Processing","Done"};   //label tương ứng cho các Status
@@ -57,6 +70,7 @@ public class HomeActivity extends AppCompatActivity {
         pieChart.setRotationEnabled(true);  //cho phép xoay
         pieChart.setHoleRadius(0f);         //tên của chart, được viết trong 1 vòng tròn ở giữa chart với bán kính này
         pieChart.setTransparentCircleAlpha(0);  // vòng tròng trong suốt, chắc để tạo thêm hiệu ứng cho đẹp?
+        processCopy();
         addDataSet();
 
         // Config toolbar
@@ -88,12 +102,29 @@ public class HomeActivity extends AppCompatActivity {
 
         menuAdapter = new MenuAdapter(this, R.layout.item_row_menu, arrListAccount);
         listViewAccount.setAdapter(menuAdapter);
+
+
     }
     private void addDataSet() {
+        database = openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
+        ArrayList<String> status = new ArrayList<>();
+        ArrayList<Integer> count = new ArrayList<>();
         ArrayList<PieEntry> yEntrys = new ArrayList<>();
+        Integer sum = 0;
 
-        for(int i=0;i<yData.length;i++){
-            yEntrys.add(new PieEntry(yData[i],xData[i]));
+        Cursor cursor = database.rawQuery("Select Count(NOTE.Id),STATUS.Status from NOTE INNER JOIN STATUS ON NOTE.StatusId = STATUS.Id group by StatusId",null);
+        while(cursor.moveToNext())
+        {
+            String sStatus = cursor.getString(1);
+            status.add(sStatus);
+            Integer sCount = cursor.getInt(0);
+            count.add(sCount);
+            sum+=sCount;
+        }
+        cursor.close();
+
+        for(int i=0;i<status.size();i++){
+            yEntrys.add(new PieEntry( (float)count.get(i)/sum*100,status.get(i)));
         }
 
         PieDataSet pieDataSet = new PieDataSet(yEntrys,"");
@@ -104,6 +135,8 @@ public class HomeActivity extends AppCompatActivity {
         colors.add(Color.GRAY);
         colors.add(Color.RED);
         colors.add(Color.BLUE);
+        colors.add(Color.GREEN);
+        colors.add(Color.YELLOW);
         pieDataSet.setColors(colors);
 
         PieData pieData = new PieData(pieDataSet);
@@ -111,6 +144,52 @@ public class HomeActivity extends AppCompatActivity {
         pieData.setValueTextColor(Color.WHITE);
         pieChart.setData(pieData);
         pieChart.invalidate();
+
+    }
+    private void processCopy()
+    {
+        try {
+            File dbFile = getDatabasePath(DATABASE_NAME);
+            if (!dbFile.exists()) {
+                copyDatabaseFromAsset();
+                Toast.makeText(getApplicationContext(), "Sao chép thành công", Toast.LENGTH_LONG).show();
+            }
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText(getApplicationContext(),ex.toString(),Toast.LENGTH_LONG).show();
+            Log.e("LOI",ex.toString());
+        }
+    }
+    private String getDatabasePath()
+    {
+        return getApplicationInfo().dataDir+DB_PATH_SUFFIX+DATABASE_NAME;
+    }
+    private void copyDatabaseFromAsset() {
+        try{
+            InputStream myInput = getAssets().open(DATABASE_NAME);
+            String outFileName = getDatabasePath();
+            File f = new File(getApplicationInfo().dataDir+DB_PATH_SUFFIX);
+            if(!f.exists())
+            {
+                f.mkdir();
+            }
+            OutputStream myOutput = new FileOutputStream(outFileName);
+            byte []buffer = new byte[1024];
+            int length;
+            while((length = myInput.read(buffer))>0)
+            {
+                myOutput.write(buffer,0,length);
+            }
+            myOutput.flush();
+            myOutput.close();
+            myInput.close();
+
+
+        }catch (Exception ex)
+        {
+            Log.e("LOI",ex.toString());
+        }
 
     }
 }
