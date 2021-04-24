@@ -6,14 +6,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Dialog;
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -23,17 +16,10 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
-
-import static tranvu203107.dmt.nms.CategoryActivity.nameCategory;
 
 public class ListNoteActivity extends AppCompatActivity {
     Toolbar toolbar;
@@ -53,7 +39,6 @@ public class ListNoteActivity extends AppCompatActivity {
     ArrayList<Note> arrNote;
     RecyclerView noteListRecycler;
     NoteAdapter noteAdapter;
-
     FloatingActionButton btnAddNote;
     Dialog dialog;
     Dialog planDateDialog;
@@ -73,12 +58,11 @@ public class ListNoteActivity extends AppCompatActivity {
     public static int priIndex;
     public static int stIndex;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_note);
-        addControls();
-        processCopy();
 
         // map
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -521,12 +505,6 @@ public class ListNoteActivity extends AppCompatActivity {
         ContentValues newValues = new ContentValues();
         newValues.put("Name",noteName);
 
-
-        long kq =ListNoteActivity.database.insert("NOTE",null,newValues);
-        if(kq>0)
-            Toast.makeText(ListNoteActivity.this,"Them thanh cong",Toast.LENGTH_LONG).show();
-        else
-            Toast.makeText(ListNoteActivity.this,"Them that bai",Toast.LENGTH_LONG).show();
     }
 
     public void SaveDataAdd(View view) {

@@ -48,4 +48,8 @@
         <item name="android:paddingLeft">5dp</item>
     </style>
 
+    <style name="notifyWarning" parent="parent">
+        <item name="android:textColor">@color/colorRed</item>
+    </style>
+
 </resources>

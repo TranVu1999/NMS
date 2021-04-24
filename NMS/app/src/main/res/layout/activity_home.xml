@@ -6,10 +6,10 @@
     android:layout_height="match_parent">
 
     <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        android:id="@+id/drawerLayout">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -17,30 +17,37 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="#2196f3" />
+                android:background="#2196f3"
+                android:id="@+id/toolbar"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
+                
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/PieChart"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Noi dung o day" />
+                    android:layout_height="match_parent">
+
+                </com.github.mikephil.charting.charts.PieChart>
 
 
             </LinearLayout>
+
         </LinearLayout>
 
+
+
+
         <com.google.android.material.navigation.NavigationView
-            android:id="@+id/navigationView"
             android:layout_width="300dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:fitsSystemWindows="true">
+            android:fitsSystemWindows="true"
+            android:id="@+id/navigationView">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -51,16 +58,16 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="150dp"
-                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_register_hero"
                     android:layout_alignParentBottom="true"
-                    android:src="@drawable/ic_register_hero" />
+                    android:layout_alignParentRight="true"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:layout_alignParentLeft="true"
                     android:layout_marginTop="30dp"
-                    android:orientation="vertical"
                     android:paddingLeft="16dp">
 
                     <TextView
@@ -69,15 +76,15 @@
                         android:text="Note Management System"
                         android:textColor="#fff"
                         android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"/>
 
                     <TextView
-                        android:id="@+id/textUsername"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="tranvudpqn123@gmail.com"
+                        android:id="@+id/txtNameUser"
                         android:textColor="#fff"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
 
                 </LinearLayout>
 
@@ -87,28 +94,30 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="200dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="200dp">
 
                 <ListView
-                    android:id="@+id/listView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:id="@+id/listView"
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="15dp"
                     android:text="Account"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="15dp"/>
 
                 <ListView
-                    android:id="@+id/listViewAccount"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:id="@+id/listViewAccount"/>
             </LinearLayout>
+
 
 
         </com.google.android.material.navigation.NavigationView>
