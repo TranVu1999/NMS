@@ -23,32 +23,52 @@
                 android:id="@+id/textStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
                 android:text="Processing"
-                android:textColor="#007bff"/>
+                android:textColor="#007bff" />
 
             <TextView
-                android:id="@+id/textName"
+                android:id="@+id/textCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="3dp"
                 android:text="Football"
                 android:textColor="#000"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="6dp"/>
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textNoteName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="3dp"
+                android:text="Category"
+                android:textColor="#000"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textPriority"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Priority"
+                android:textColor="#000" />
 
             <TextView
                 android:id="@+id/textPlanDate"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Plan Date: 06-09-21"
-                android:textColor="#000"/>
+                android:textColor="#000" />
 
             <TextView
                 android:id="@+id/textCreateDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Create Date: 06-08-21"/>
+                android:layout_marginBottom="6dp"
+                android:text="Create Date: 06-08-21" />
         </LinearLayout>
 
         <ImageButton

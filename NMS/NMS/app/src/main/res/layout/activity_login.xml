@@ -75,10 +75,6 @@
             </LinearLayout>
 
 
-
-
-
-
             <TextView
                 style="@style/viewParent"
                 android:layout_gravity="end"

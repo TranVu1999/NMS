@@ -28,6 +28,9 @@ public class CategoryActivity extends AppCompatActivity {
     ArrayList<ItemMenu> arrListAccount;
     MenuAdapter menuAdapter;
 
+    // new update
+    public static String nameCategory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,4 +89,39 @@ public class CategoryActivity extends AppCompatActivity {
         menuAdapter = new MenuAdapter(this, R.layout.item_row_menu, arrListAccount);
         listViewAccount.setAdapter(menuAdapter);
     }
+
+
+    // new update
+    public void onClickExercise(View view) {
+        nameCategory ="Exercise";
+        Intent intent = new Intent(CategoryActivity.this,ListNoteActivity.class);
+        startActivity(intent);
+    }
+
+    public void onClickHomeWork(View view) {
+        nameCategory ="HomeWork";
+        Intent intent = new Intent(CategoryActivity.this,ListNoteActivity.class);
+        startActivity(intent);
+    }
+
+    public void onClickMeeting(View view) {
+        nameCategory ="Meeting";
+        Intent intent = new Intent(CategoryActivity.this,ListNoteActivity.class);
+        startActivity(intent);
+    }
+
+    public void onClickEntertainment(View view) {
+        nameCategory ="Entertainment";
+        Intent intent = new Intent(CategoryActivity.this,ListNoteActivity.class);
+        startActivity(intent);
+    }
+
+    public void onClickMyJob(View view) {
+        nameCategory ="MyJob";
+        Intent intent = new Intent(CategoryActivity.this,ListNoteActivity.class);
+        startActivity(intent);
+    }
+
+
 }
+
