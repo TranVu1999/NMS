@@ -12,46 +12,46 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import tranvu203107.dmt.nms.model.Priority;
+import tranvu203107.dmt.nms.model.Status;
 
-public class PriorityAdapter extends RecyclerView.Adapter<PriorityAdapter.ViewHolder> {
+public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.ViewHolder> {
     Context context;
-    ArrayList<Priority> listPriority;
+    ArrayList<Status> listStatus;
 
-    public PriorityAdapter(Context context, ArrayList<Priority> listPriority) {
+    public StatusAdapter(Context context, ArrayList<Status> listStatus) {
         this.context = context;
-        this.listPriority = listPriority;
+        this.listStatus = listStatus;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // gán view
-        View view = LayoutInflater.from(context).inflate(R.layout.activity_priority_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.activity_status_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Gán dữ liêuk
-        Priority Priority = listPriority.get(position);
+        Status status = listStatus.get(position);
 
-        holder.textPriority.setText(Priority.getPriority());
-        holder.textCreatedDate.setText(Priority.getCreatedDate());
+        holder.textStatus.setText(status.getStatus());
+        holder.textCreatedDate.setText(status.getCreatedDate());
     }
 
     @Override
     public int getItemCount() {
-        return listPriority.size(); // trả item tại vị trí postion
+        return listStatus.size(); // trả item tại vị trí postion
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
-        TextView textPriority, textCreatedDate;
+        TextView textStatus, textCreatedDate;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // Ánh xạ view
-            textPriority = itemView.findViewById(R.id.txtView_Priority);
+            textStatus = itemView.findViewById(R.id.txtView_Status);
             textCreatedDate = itemView.findViewById(R.id.txtView_CreatedDate);
 
             //
