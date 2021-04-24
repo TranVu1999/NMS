@@ -61,6 +61,13 @@ public class ListNoteActivity extends AppCompatActivity {
     Dialog dialog;
     Dialog planDateDialog;
     String date;
+    public static String statusName;
+    public static String cateName;
+    public static String priorityName;
+    public static String planDate;
+    public static int cateIndex;
+    public static int priIndex;
+    public static int stIndex;
 
     Spinner spinnerCate, spinnerPriority, spinnerStatus;
 
@@ -239,7 +246,10 @@ public class ListNoteActivity extends AppCompatActivity {
     private void openEditNoteDialog(Note currentNote) {
         dialog.setContentView(R.layout.layout_add_note);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCancelable(false);
 
+        EditText txtNoteName = dialog.findViewById(R.id.editNoteName);
+        TextView lblPlanDate = dialog.findViewById(R.id.lblPlanDate);
         Button btnCloseDialog = dialog.findViewById(R.id.btnCloseDialog);
         Button btnSaveData = dialog.findViewById(R.id.btnSaveData);
         Button btnSelectPlanDate = dialog.findViewById(R.id.btnSelectPlanDate);
@@ -251,6 +261,8 @@ public class ListNoteActivity extends AppCompatActivity {
         });
 
 
+        database = openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
+
         OptionAdapter optionsAdapter;
         spinnerCate = dialog.findViewById(R.id.spinnerCate);
         spinnerPriority = dialog.findViewById(R.id.spinnerPrioroty);
@@ -258,35 +270,105 @@ public class ListNoteActivity extends AppCompatActivity {
         ArrayList<Option> arrOptionCate;
         // action menu
         arrOptionCate = new ArrayList<Option>();
-        arrOptionCate.add(new Option("Exercise", "1"));
-        arrOptionCate.add(new Option("Homework", "2"));
-        arrOptionCate.add(new Option("Meeting", "3"));
-        arrOptionCate.add(new Option("Entertainment", "4"));
-        arrOptionCate.add(new Option("My Job", "5"));
+        Cursor cursor = database.rawQuery("SELECT Id,NAME\n" +
+                "FROM CATEGORY",null);
+        while(cursor.moveToNext())
+        {
+            int id=cursor.getInt(0);
+            String cateName = cursor.getString(1);
+            arrOptionCate.add(new Option(cateName,id+""));
+
+        }
+        cursor.close();
 
         ArrayList<Option> arrOptionPriority;
         // action menu
         arrOptionPriority = new ArrayList<Option>();
-        arrOptionPriority.add(new Option("High", "1"));
-        arrOptionPriority.add(new Option("Medium", "2"));
-        arrOptionPriority.add(new Option("Low", "3"));
+        Cursor cursorPriority = database.rawQuery("SELECT Id,Priority\n" +
+                "FROM PRIORITY",null);
+        while(cursorPriority.moveToNext())
+        {
+            int id=cursorPriority.getInt(0);
+            String priorityName = cursorPriority.getString(1);
+            arrOptionPriority.add(new Option(priorityName,id+""));
+
+        }
+        cursorPriority.close();
 
         ArrayList<Option> arrOptionStatus;
         // action menu
         arrOptionStatus = new ArrayList<Option>();
-        arrOptionStatus.add(new Option("Done", "1"));
-        arrOptionStatus.add(new Option("Processing", "2"));
-        arrOptionStatus.add(new Option("Pending", "3"));
+        Cursor cursorStatus = database.rawQuery("SELECT Id,Status \n" +
+                "FROM STATUS",null);
+        while(cursorStatus.moveToNext())
+        {
+            int id=cursorStatus.getInt(0);
+            String statusName = cursorStatus.getString(1);
+            arrOptionStatus.add(new Option(statusName,id+""));
+        }
+        cursorPriority.close();
 
         optionsAdapter = new OptionAdapter(this, R.layout.layout_option_item, arrOptionCate);
         spinnerCate.setAdapter(optionsAdapter);
-        spinnerCate.setSelection(arrOptionCate.indexOf(currentNote.getCategory()));
 
         optionsAdapter = new OptionAdapter(this, R.layout.layout_option_item, arrOptionPriority);
         spinnerPriority.setAdapter(optionsAdapter);
 
         optionsAdapter = new OptionAdapter(this, R.layout.layout_option_item, arrOptionStatus);
         spinnerStatus.setAdapter(optionsAdapter);
+
+        Cursor cursorEditInfo = database.rawQuery("SELECT * \n" +
+                "FROM NOTE\n" +
+                "WHERE Id = "+currentNote.getId(),null);
+        while(cursorEditInfo.moveToNext())
+        {
+            txtNoteName.setText(cursorEditInfo.getString(2));
+            spinnerCate.setSelection(cursorEditInfo.getInt(3)-1);
+            spinnerPriority.setSelection(cursorEditInfo.getInt(4)-1);
+            spinnerStatus.setSelection(cursorEditInfo.getInt(5)-1);
+            lblPlanDate.setText(cursorEditInfo.getString(6));
+        }
+        cursorPriority.close();
+
+        spinnerCate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // your code here
+                cateIndex=position+1;
+                cateName= arrOptionCate.get(position).title.toString();
+                Toast.makeText(getApplicationContext(), "You pick category "+ cateName , Toast.LENGTH_LONG).show();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+        });
+        spinnerPriority.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // your code here
+                priIndex=position+1;
+                priorityName = arrOptionPriority.get(position).title.toString();
+                Toast.makeText(getApplicationContext(), "You pick priority " + priorityName, Toast.LENGTH_LONG).show();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+        });
+        spinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // your code here
+                stIndex=position+1;
+                statusName = arrOptionStatus.get(position).title.toString();
+                Toast.makeText(getApplicationContext(), "You pick status " + statusName, Toast.LENGTH_LONG).show();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+        });
 
         dialog.show();
     }

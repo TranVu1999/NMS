@@ -42,7 +42,7 @@
                     android:textColor="#000"/>
 
                 <EditText
-                    android:id="@+id/editTextEmail"
+                    android:id="@+id/editNoteName"
                     style="@style/modifiedEditText"
                     android:hint="@string/login_email_hint"
                     android:inputType="textEmailAddress"
