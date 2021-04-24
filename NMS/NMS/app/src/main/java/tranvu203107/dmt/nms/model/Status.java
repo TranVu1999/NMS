@@ -1,16 +1,15 @@
 package tranvu203107.dmt.nms.model;
 
-public class Priority {
+public class Status {
     private int id;
-    private String priority;
+    private String status;
     private String createdDate;
 
-    public Priority() {
-    }
+    public  Status(){}
 
-    public Priority(int id, String priority, String createdDate) {
+    public Status(int id, String status, String createdDate) {
         this.id = id;
-        this.priority = priority;
+        this.status = status;
         this.createdDate = createdDate;
     }
 
@@ -22,12 +21,12 @@ public class Priority {
         this.id = id;
     }
 
-    public String getPriority() {
-        return priority;
+    public String getStatus() {
+        return status;
     }
 
-    public void setPriority(String priority) {
-        this.priority = priority;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getCreatedDate() {

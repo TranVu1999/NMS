@@ -89,14 +89,24 @@ public class HomeActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = null;
                 switch (position){
                     case 1:
-                        Intent intent = new Intent(
+                        intent = new Intent(
                                 HomeActivity.this,
                                 CategoryActivity.class
                         ).putExtra("Id", Id);
                         startActivity(intent);
                         break;
+
+                    case 2:
+                        intent = new Intent(
+                                HomeActivity.this,
+                                ListStatusActivity.class
+                        ).putExtra("Id", Id);
+                        startActivity(intent);
+                        break;
+
                     default:
                         break;
                 }
