@@ -20,6 +20,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     EditText txtOldPass;
     EditText txtNewPassword, txtConfirmNewPass;
     Button btnChange;
+
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -36,16 +37,18 @@ public class ChangePasswordActivity extends AppCompatActivity {
     }
     private void addEvents() {
         addControls();
-        database = openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
-        String query = "select * from USER where Id = " + Id ;
-        Cursor cursor   = database.rawQuery(query,null);
-        cursor.moveToFirst();
+
+
        // txtName.setText(cursor.getString(1)) ;
         //txtEmail.setText(cursor.getString(2));
         btnChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // database = openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
+                database = openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
+                String query = "select * from USER where Id = " + Id ;
+                Cursor cursor   = database.rawQuery(query,null);
+                cursor.moveToFirst();
                 ContentValues values = new ContentValues();
                 values.put("password",txtNewPassword.getText().toString());
                 if(txtOldPass.getText().toString().isEmpty()||txtNewPassword.getText().toString().isEmpty()||txtConfirmNewPass.getText().toString().isEmpty()){
